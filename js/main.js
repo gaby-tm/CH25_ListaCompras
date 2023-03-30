@@ -125,7 +125,6 @@ btnAgregar.addEventListener("click", function(event){
      txtNumber.value ="";
      txtNombre.focus();
      }
-
  });
 
 txtNumber.addEventListener("blur", function(event){        //evento blur: perder el foco --> salirse del campo
@@ -136,4 +135,15 @@ txtNumber.addEventListener("blur", function(event){        //evento blur: perder
 txtNombre.addEventListener("blur", function(event){        //evento blur: perder el foco --> salirse del campo
     event.preventDefault();
     txtNombre.value = txtNombre.value.trim();
+});
+
+window.addEventListener("load", function(event){    //Evento de que se cargue una ventana
+    contador = parseInt(localStorage.getItem("contadorProductos"));
+    totalEnProductos = parseInt(localStorage.getItem("totalEnProductos"));
+    costoTotal = parseFloat(localStorage.getItem("costoTotal"));
+         
+    contadorProductos.innerText=contador;
+    productosTotal.innerText=totalEnProductos;
+    precioTotal.innerText=`$ ${costoTotal}`;
+
 });
