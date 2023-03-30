@@ -138,6 +138,16 @@ txtNombre.addEventListener("blur", function(event){        //evento blur: perder
 });
 
 window.addEventListener("load", function(event){    //Evento de que se cargue una ventana
+    if (localStorage.getItem("contadorProductos")==null){     //Estos if son para el caso de que se haya borrado el localStorage, al actualizar la página no muestre NaN y en vez de eso muestre ceros
+        localStorage.setItem("contadorProductos", "0");
+    }
+    if (localStorage.getItem("totalEnProductos")==null){
+        localStorage.setItem("totalEnProductos", "0");
+    }
+    if (localStorage.getItem("costoTotal")==null){
+        localStorage.setItem("costoTotal", "0.0");
+    }
+
     contador = parseInt(localStorage.getItem("contadorProductos"));
     totalEnProductos = parseInt(localStorage.getItem("totalEnProductos"));
     costoTotal = parseFloat(localStorage.getItem("costoTotal"));
@@ -147,3 +157,6 @@ window.addEventListener("load", function(event){    //Evento de que se cargue un
     precioTotal.innerText=`$ ${costoTotal}`;
 
 });
+
+
+//En el localStorage todo se almacena como string
