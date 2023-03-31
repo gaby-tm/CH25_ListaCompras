@@ -168,7 +168,23 @@ window.addEventListener("load", function(event){    //Evento de que se cargue un
         this.localStorage.setItem("resumen", resumen);
    }//if
    let res = JSON.parse(localStorage.getItem("resumen"));
-   
+   if (this.localStorage.getItem("datos") !== null ) {
+        datos = JSON.parse(this.localStorage.getItem("datos"));
+  
+        datos.forEach(r => {
+            let row = ` <tr>
+            <th>${r.id}</th>      
+            <td>${r.nombre}</td>
+            <td>${r.cantidad}</td>
+            <td>${r.precio}</td>
+        </tr>`;
+
+        cuerpoTabla[0].insertAdjacentHTML("beforeend", row);
+
+        });
+  
+    }//!=null (Si es diferente de null)
+
    //Esto estaba antes:
     // if (localStorage.getItem("contadorProductos")==null){     //Estos if son para el caso de que se haya borrado el localStorage, al actualizar la página no muestre NaN y en vez de eso muestre ceros
     //     localStorage.setItem("contadorProductos", "0");
