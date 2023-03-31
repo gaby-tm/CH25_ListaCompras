@@ -1,19 +1,19 @@
 // El código va aquí -> 
-let txtNombre = document.getElementById("Name");    // Campo input
-let txtNumber = document.getElementById("Number");  // Campo input
+let txtNombre = document.getElementById("Name");    // Campo input del Nombre del producto
+let txtNumber = document.getElementById("Number");  // Campo input de la cantidad del producto
 
-let btnAgregar = document.getElementById("btnAgregar");
-let btnClear = document.getElementById("btnClear");
+let btnAgregar = document.getElementById("btnAgregar"); //Botón agregar
+let btnClear = document.getElementById("btnClear");     //Botón Limpiar todo
 
-let alertValidacionesTexto = document.getElementById("alertValidacionesTexto");
-let alertValidaciones = document.getElementById("alertValidaciones");
+let alertValidacionesTexto = document.getElementById("alertValidacionesTexto"); //Texto que aparece dentro de la alerta
+let alertValidaciones = document.getElementById("alertValidaciones");           //Recuadro rojo que aparece (alerta)
 
-let tabla = document.getElementById("tablaListaCompras");
+let tabla = document.getElementById("tablaListaCompras");   
 let cuerpoTabla = tabla.getElementsByTagName("tbody");
 
-let contadorProductos = document.getElementById("contadorProductos");
-let productosTotal = document.getElementById("productosTotal");
-let precioTotal = document.getElementById("precioTotal");
+let contadorProductos = document.getElementById("contadorProductos");  //Contador de líneas de productos diferentes 
+let productosTotal = document.getElementById("productosTotal");        //Contador de cantidad de productos
+let precioTotal = document.getElementById("precioTotal");              //Suma  de precios
 
 let isValid = true;
 let idTimeout;
@@ -118,9 +118,17 @@ btnAgregar.addEventListener("click", function(event){
      productosTotal.innerText= totalEnProductos;
      costoTotal += precio * parseFloat(txtNumber.value);
      precioTotal.innerText = `$ ${costoTotal.toFixed(2)}`;
-     localStorage.setItem("contadorProductos", contador);
-     localStorage.setItem("totalEnProductos", totalEnProductos);
-     localStorage.setItem("costoTotal", costoTotal.toFixed(2));
+
+     //Esto se agregó después.
+     let resumen = `{"contadorProductos" : ${contador},                         
+                    "totalEnProductos"   : ${totalEnProductos},
+                    "costoTotal"         : ${costoTotal.toFixed(2)} }`;
+    localStorage.setItem("resumen", resumen);
+
+    //  localStorage.setItem("contadorProductos", contador);                   //Primero se había realizado esta manera
+    //  localStorage.setItem("totalEnProductos", totalEnProductos);
+    //  localStorage.setItem("costoTotal", costoTotal.toFixed(2));
+     
      txtNombre.value ="";
      txtNumber.value ="";
      txtNombre.focus();
@@ -138,19 +146,30 @@ txtNombre.addEventListener("blur", function(event){        //evento blur: perder
 });
 
 window.addEventListener("load", function(event){    //Evento de que se cargue una ventana
-    if (localStorage.getItem("contadorProductos")==null){     //Estos if son para el caso de que se haya borrado el localStorage, al actualizar la página no muestre NaN y en vez de eso muestre ceros
-        localStorage.setItem("contadorProductos", "0");
-    }
-    if (localStorage.getItem("totalEnProductos")==null){
-        localStorage.setItem("totalEnProductos", "0");
-    }
-    if (localStorage.getItem("costoTotal")==null){
-        localStorage.setItem("costoTotal", "0.0");
-    }
+ //Esto se agregó:
+    if (this.localStorage.getItem("resumen") == null ) {
+        let resumen = `{"contadorProductos" : ${contador},
+        "totalEnProductos"  :  ${totalEnProductos},
+        "costoTotal"        :  ${costoTotal.toFixed(2)} }`;
+        this.localStorage.setItem("resumen", resumen);
+   }//if
+   let res = JSON.parse(localStorage.getItem("resumen"));
+   
+   //Esto estaba antes:
+    // if (localStorage.getItem("contadorProductos")==null){     //Estos if son para el caso de que se haya borrado el localStorage, al actualizar la página no muestre NaN y en vez de eso muestre ceros
+    //     localStorage.setItem("contadorProductos", "0");
+    // }
+    // if (localStorage.getItem("totalEnProductos")==null){
+    //     localStorage.setItem("totalEnProductos", "0");
+    // }
+    // if (localStorage.getItem("costoTotal")==null){
+    //     localStorage.setItem("costoTotal", "0.0");
+    // }
 
-    contador = parseInt(localStorage.getItem("contadorProductos"));
-    totalEnProductos = parseInt(localStorage.getItem("totalEnProductos"));
-    costoTotal = parseFloat(localStorage.getItem("costoTotal"));
+    //Esto se agregó y lo que estaba antes se comentó:
+    contador = res.contadorProductos;// parseInt(localStorage.getItem("contadorProductos"));
+    totalEnProductos = res.totalEnProductos; // parseInt(localStorage.getItem("totalEnProductos"));
+    costoTotal = res.costoTotal; //parseFloat(localStorage.getItem("costoTotal"));
          
     contadorProductos.innerText=contador;
     productosTotal.innerText=totalEnProductos;
