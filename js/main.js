@@ -1,18 +1,17 @@
-// El código va aquí -> 
-let txtNombre = document.getElementById("Name");    // Campo input del Nombre del producto
-let txtNumber = document.getElementById("Number");  // Campo input de la cantidad del producto
+let txtNombre = document.getElementById("Name");    //Campo input del Nombre del producto
+let txtNumber = document.getElementById("Number");  //Campo input de la cantidad del producto
 
-let btnAgregar = document.getElementById("btnAgregar"); //Botón agregar
+let btnAgregar = document.getElementById("btnAgregar"); //Botón Agregar
 let btnClear = document.getElementById("btnClear");     //Botón Limpiar todo
 
 let alertValidacionesTexto = document.getElementById("alertValidacionesTexto"); //Texto que aparece dentro de la alerta
 let alertValidaciones = document.getElementById("alertValidaciones");           //Recuadro rojo que aparece (alerta)
 
-let tabla = document.getElementById("tablaListaCompras");   
-let cuerpoTabla = tabla.getElementsByTagName("tbody");
+let tabla = document.getElementById("tablaListaCompras");   //Encabezado de la tabla (Fila 1)
+let cuerpoTabla = tabla.getElementsByTagName("tbody");      //Tabla que se llenará con los productos que se agreguen.
 
-let contadorProductos = document.getElementById("contadorProductos");  //Contador de líneas de productos diferentes 
-let productosTotal = document.getElementById("productosTotal");        //Contador de cantidad de productos
+let contadorProductos = document.getElementById("contadorProductos");  //Contador (Suma) de líneas de productos diferentes 
+let productosTotal = document.getElementById("productosTotal");        //Contador (Suma( de cantidad de productos
 let precioTotal = document.getElementById("precioTotal");              //Suma  de precios
 
 let isValid = true;
@@ -22,7 +21,9 @@ let contador = 0;
 let totalEnProductos = 0;
 let costoTotal = 0;
 
-// Limpiar campos
+let datos = []; //Arreglo vacío --> Aquí se almacenarán los datos de la tabla
+
+// Botón Limpiar todo:
 btnClear.addEventListener("click", function(event){
     event.preventDefault();
     txtNombre.value="";
@@ -111,6 +112,19 @@ btnAgregar.addEventListener("click", function(event){
                     <td>${txtNumber.value}</td>
                     <td>${precio}</td>
                 </tr>`;
+
+    //Aquí se convierte un arreglo a un objeto (con JSON):
+    //elemento es un objeto
+    let elemento =  `{
+                        "id"       :  ${contador},  
+                        "nombre"   : "${txtNombre.value}",
+                        "cantidad" : "${txtNumber.value}",
+                        "precio"   : "${precio}" 
+                        }`;
+    datos.push(JSON.parse(elemento)); //datos es un arreglo
+
+    localStorage.setItem("datos", JSON.stringify(datos));  //stringify convierte un arreglo a string.
+                        //Llave , //Valor                  //Cada llave y su valor se guardan en el localStorage como string.  
 
      cuerpoTabla[0].insertAdjacentHTML("beforeend", row);
      contadorProductos.innerText=contador;
